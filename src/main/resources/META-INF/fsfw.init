@@ -53,7 +53,7 @@ pid_status() {
 start(){
     pid_status
     status=$?
-    echo -n $"Starting FSF: "
+    echo -n $"Starting FSFW: "
     if [ "$status" -gt "0" ];
     then
 	sudo -u fsfw $CMD 2>&1 &
@@ -65,15 +65,15 @@ start(){
 	echo ${PID} > ${PIDFILE}
 	return $RETVAL
     else
-	echo "Unable to start because FSFw is already running"
-	failure $"FSFw startup"
+	echo "Unable to start because FSFW is already running"
+	failure $"FSFW startup"
 	echo
 	return 0
     fi
 }
 
 stop(){
-    echo -n $"Stopping FSFw: "
+    echo -n $"Stopping FSFW: "
     killproc -p ${PIDFILE} -d ${STOP_TIMEOUT} java
     RETVAL=$?
     echo
@@ -83,7 +83,7 @@ stop(){
 reload(){
     echo -n $"Reloading FSFW: "
     curl -S http://localhost:8080/fsfw/admin/json
-    RETVLAN=$?
+    RETVAL=$?
     echo
 }
 #handle arguments
@@ -107,16 +107,15 @@ do
         sleep $RESTART_DELAY
         start
         ;;
-        status)
-            status -p ${PIDFILE} FSF
+    status)
+        status -p ${PIDFILE} FSFW
         ;;
     reload)
 	reload
         ;;
     *)
-        echo "usage: $0 (start|stop|restart|help)"
+        echo "usage: $0 (start|stop|restart|status|help)"
         cat <<EOF
-EOF
 
 start      - start FlowSpace Firewall
 stop       - stop FlowSpace Firewall
